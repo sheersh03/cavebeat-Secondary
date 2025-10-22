@@ -1,0 +1,213 @@
+/**
+ * Hero Section Styles - Fixed Animation Issues
+ */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: var(--z-content);
+  padding: 0 60px;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 1200px;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  margin-bottom: 30px;
+  opacity: 1;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: 0.2s;
+  position: relative;
+  padding-right: 12px;
+}
+
+.hero-tag::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  width: 6px;
+  height: 16px;
+  background: var(--color-cyan);
+  border-radius: 2px;
+  animation: caretBlink 1s steps(1, end) infinite;
+}
+
+.hero-tag.typewriter-complete::after {
+  animation: none;
+  opacity: 0;
+}
+
+.hero-title {
+  font-size: clamp(48px, 10vw, 140px);
+  font-weight: var(--font-weight-black);
+  line-height: 0.95;
+  letter-spacing: -4px;
+  margin-bottom: 40px;
+  color: var(--color-white);
+  opacity: 1;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: 0.4s;
+}
+
+.hero-title span {
+  display: block;
+  color: var(--color-white);
+}
+
+.hero-subtitle {
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: var(--font-weight-light);
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto 50px;
+  opacity: 1;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: 0.6s;
+}
+
+.hero-cta {
+  opacity: 1;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: 0.8s;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 18px 50px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-coral));
+  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.btn-primary:hover {
+  border-color: var(--color-cyan);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(73, 197, 182, 0.4);
+}
+
+.btn-primary:hover::before {
+  left: 0;
+}
+
+/* Keyframe with 'both' to maintain final state */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes caretBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.01%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: clamp(20px, 6vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  opacity: 1;
+  animation: fadeIn 1s ease both;
+  animation-delay: 1.2s;
+  z-index: 10;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-cyan), transparent);
+  animation: scrollDown 2s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes scrollDown {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(15px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding: 0 30px;
+  }
+
+  .scroll-indicator {
+    bottom: 20px;
+  }
+
+  .scroll-line {
+    height: 32px;
+  }
+
+  .hero-title {
+    letter-spacing: -2px;
+  }
+}

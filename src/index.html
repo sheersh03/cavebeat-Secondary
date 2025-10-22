@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative digital experiences that blend story, art & technology">
+    <title>CaveBeat · Creative Digital Experiences</title>
+</head>
+<body>
+    <!-- WebGL Canvas Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">
+            <img src="<%= require('./assets/images/logo.png') %>" alt="CaveBeat logo">
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <!-- <li><a href="#work">Work</a></li> -->
+                <!-- <li><a href="#about">About</a></li> -->
+                <li class="nav-link-desktop"><button type="button" class="nav-link-button" data-modal-open="services">Our Services</button></li>
+                <li class="nav-link-desktop"><a href="#industries">Industries</a></li>
+                <!-- <li><a href="#contact">Contact</a></li> -->
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Menu -->
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <div class="menu-content">
+            <div class="menu-logo">
+                <img src="<%= require('./assets/images/logo.png') %>" alt="CaveBeat logo">
+            </div>
+            <ul class="menu-items">
+                <li><a href="#work">Work</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#careers">Careers</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content"><br><br>
+            <div class="hero-tag" data-type-text="Connected AI Verticals Edge Bridging Ecosystems Across Territories">Connected AI Verticals Edge Bridging Ecosystems Across Territories</div>
+            <br>
+            <h1 class="hero-title">
+                <span>Creating Digital</span>
+                <span>Experiences</span>
+            </h1>
+            <p class="hero-subtitle">
+                We blend story, art & technology to craft award-winning digital experiences that push the boundaries of what's possible on the web.
+            </p>
+            <div class="hero-cta">
+                <a href="#work" class="btn-primary">EXPLORE OUR WORK</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section class="work-section" id="work">
+        <div class="section-header">
+            <div class="section-tag">Featured Projects</div>
+            <h2 class="section-title">Selected Work</h2>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&h=1080&fit=crop&q=90" 
+                     alt="Immersive Journey" 
+                     class="project-image"
+                     loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-tag">Interactive Experience / WebGL</div>
+                    <h3 class="project-title">Immersive Journey</h3>
+                    <p class="project-desc">A groundbreaking WebGL experience combining real-time rendering, particle systems, and AI-driven interactions.</p>
+                    <a href="#" class="project-link">View Project</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1920&h=1080&fit=crop&q=90" 
+                     alt="Spatial Storytelling" 
+                     class="project-image"
+                     loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-tag">Brand Experience / 3D</div>
+                    <h3 class="project-title">Spatial Storytelling</h3>
+                    <p class="project-desc">An immersive 3D environment that brings brand narratives to life through innovative spatial design.</p>
+                    <a href="#" class="project-link">View Project</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop&q=90" 
+                     alt="Mixed Reality" 
+                     class="project-image"
+                     loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-tag">Digital Installation / WebXR</div>
+                    <h3 class="project-title">Mixed Reality</h3>
+                    <p class="project-desc">Pushing boundaries with WebXR technology, creating seamless transitions between physical and digital realms.</p>
+                    <a href="#" class="project-link">View Project</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1920&h=1080&fit=crop&q=90" 
+                     alt="Product Showcase" 
+                     class="project-image"
+                     loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-tag">E-Commerce / Animation</div>
+                    <h3 class="project-title">Product Showcase</h3>
+                    <p class="project-desc">Elevating online shopping with cinematic product presentations and interactive 3D models.</p>
+                    <a href="#" class="project-link">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-cta">
+            <h2 class="footer-title">Let's Create Together</h2>
+            <p class="footer-text">Ready to build something extraordinary?</p>
+            <button type="button" class="btn-primary" data-modal-open="project">Start a Project</button>
+        </div>
+
+        <div class="social-links">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://behance.net" target="_blank" rel="noopener noreferrer">Behance</a>
+            <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer">Dribbble</a>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">Made with ❤️, © 2025 CaveBeat. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#careers">Careers</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Request Modal -->
+    <div class="modal-overlay" id="projectModal" role="presentation" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" aria-describedby="projectModalDescription">
+            <button type="button" class="modal-close" data-modal-close aria-label="Close project request form">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <header class="modal-header">
+                <h2 id="projectModalTitle">Let's build extraordinary together</h2>
+                <!-- <p id="projectModalDescription">Let's build something extraordinary together</p> -->
+            </header>
+            <form id="projectRequestForm" novalidate>
+                <div class="modal-grid">
+                    <div class="form-field">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required autocomplete="name" placeholder="Your full name">
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+                    </div>
+                    <div class="form-field">
+                        <label for="phone">Phone Number * <span>(International format)</span></label>
+                        <input type="tel" id="phone" name="phone" required inputmode="tel" placeholder="+918448802078" pattern="^\\+?[0-9\\s-]{7,20}$" title="Use international format: +[country code][number]">
+                        <small class="field-help">Use international format: +[country code][number]</small>
+                    </div>
+                    <div class="form-field">
+                        <label for="company">Company/Organization *</label>
+                        <input type="text" id="company" name="company" required autocomplete="organization" placeholder="Your company name">
+                    </div>
+                    <div class="form-field">
+                        <label for="projectType">Project Type *</label>
+                        <select id="projectType" name="projectType" required>
+                            <option value="" disabled selected>Select project type</option>
+                            <option value="webgl-experience">WebGL Experience</option>
+                            <option value="brand-storytelling">Brand Storytelling</option>
+                            <option value="immersive-installation">Immersive Installation</option>
+                            <option value="product-showcase">Product Showcase</option>
+                            <option value="custom">Custom Project</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="budget">Budget Range *</label>
+                        <select id="budget" name="budget" required>
+                            <option value="" disabled selected>Select budget</option>
+                            <option value="under-25k">Under $25K</option>
+                            <option value="25k-50k">$25K - $50K</option>
+                            <option value="50k-100k">$50K - $100K</option>
+                            <option value="100k-plus">$100K+</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="timeline">Timeline *</label>
+                        <select id="timeline" name="timeline" required>
+                            <option value="" disabled selected>Select timeline</option>
+                            <option value="urgent">4-6 Weeks</option>
+                            <option value="quarter">6-12 Weeks</option>
+                            <option value="flexible">12+ Weeks</option>
+                            <option value="undecided">Still defining</option>
+                        </select>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="projectDescription">Project Description *</label>
+                        <textarea id="projectDescription" name="projectDescription" rows="4" required placeholder="Tell us about your project goals, requirements, and any specific features you need..."></textarea>
+                    </div>
+                </div>
+
+                <fieldset class="form-field form-field--stacked">
+                    <legend>Preferred Contact Method *</legend>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="contactMethod" value="email" required checked>
+                            <span>Email</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="contactMethod" value="phone" required>
+                            <span>Phone</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" data-modal-close>Cancel</button>
+                    <button type="submit" class="btn-primary btn-primary--gradient">Send Project Request</button>
+                </div>
+
+                <div class="form-status" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Services Overview Modal -->
+    <div class="modal-overlay" id="servicesModal" role="presentation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog--services" role="dialog" aria-modal="true" aria-labelledby="servicesModalTitle" aria-describedby="servicesModalDescription">
+            <div class="services-modal__bg" aria-hidden="true">
+                <span class="cube cube--one"></span>
+                <span class="cube cube--two"></span>
+                <span class="cube cube--three"></span>
+                <span class="cube cube--four"></span>
+            </div>
+            <button type="button" class="modal-close" data-modal-close aria-label="Close services overview">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div class="services-modal">
+                <header class="services-modal__header">
+                    <h2 id="servicesModalTitle">Our Services</h2>
+                    <p id="servicesModalDescription" class="services-modal__subtitle">Full-spectrum digital execution</p>
+                    <p class="services-modal__intro">
+                        From core ICT modernisation to immersive experiences, CaveBeat delivers end-to-end product, platform, and infrastructure innovation.
+                    </p>
+                </header>
+
+                <div class="services-stack" data-services-stack>
+                    <div class="services-stack__track" role="listbox" aria-label="Service offerings">
+                        <button type="button" class="services-stack__item is-active" role="option" aria-selected="true" data-service-index="0" data-icon="💡" data-usps="24/7 infrastructure monitoring with proactive remediation|Hybrid cloud architecture tailored for global teams|Enterprise-grade compliance across critical markets">
+                            <span class="services-stack__glyph" aria-hidden="true">💡</span>
+                            <span class="services-stack__label">ICT Services</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="1" data-icon="💻" data-usps="Design-to-deployment ownership with agile cadences|Modular codebases ready for rapid feature scaling|Automated QA pipelines delivering 99.9% uptime">
+                            <span class="services-stack__glyph" aria-hidden="true">💻</span>
+                            <span class="services-stack__label">Software Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="2" data-icon="📱" data-usps="Pixel-perfect native experiences across iOS and Android|Real-time analytics baked into every release|Offline-first architecture for resilient engagement">
+                            <span class="services-stack__glyph" aria-hidden="true">📱</span>
+                            <span class="services-stack__label">Mobile App Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="3" data-icon="🚀" data-usps="Secure device provisioning with zero-touch onboarding|Edge intelligence for millisecond decision loops|Unified dashboards across devices, data, and alerts">
+                            <span class="services-stack__glyph" aria-hidden="true">🚀</span>
+                            <span class="services-stack__label">IoT Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="4" data-icon="🧠" data-usps="Strategy sprints accelerating digital transformation|Vendor-neutral roadmaps aligned to business KPIs|Change management frameworks proven across enterprises">
+                            <span class="services-stack__glyph" aria-hidden="true">🧠</span>
+                            <span class="services-stack__label">IT Consulting</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="5" data-icon="🛠️" data-usps="Fully managed SOC with rapid incident resolution|Lifecycle management for hardware, software, and users|Predictive analytics driving lower operational costs">
+                            <span class="services-stack__glyph" aria-hidden="true">🛠️</span>
+                            <span class="services-stack__label">Managed IT Services</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="6" data-icon="⛓️" data-usps="Enterprise-grade smart contracts with formal audits|Interoperable ledgers connecting multi-chain ecosystems|Tokenomics design aligned with regulatory guidelines">
+                            <span class="services-stack__glyph" aria-hidden="true">⛓️</span>
+                            <span class="services-stack__label">Blockchain Services</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="7" data-icon="☁️" data-usps="Multi-cloud orchestration with automated scaling|FinOps governance delivering measurable savings|Zero-downtime migrations with rollback assurance">
+                            <span class="services-stack__glyph" aria-hidden="true">☁️</span>
+                            <span class="services-stack__label">Cloud Computing</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="8" data-icon="⚙️" data-usps="CI/CD pipelines deploying multiple times per day|Observability stacks tuned for instant anomaly detection|Infrastructure-as-code for reproducible environments">
+                            <span class="services-stack__glyph" aria-hidden="true">⚙️</span>
+                            <span class="services-stack__label">DevOps</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="9" data-icon="🕶️" data-usps="Immersive storytelling with photorealistic rendering|Cross-platform deployment for headset and mobile|Spatial analytics driving engagement insights">
+                            <span class="services-stack__glyph" aria-hidden="true">🕶️</span>
+                            <span class="services-stack__label">AR/VR Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="10" data-icon="🛡️" data-usps="Threat hunting powered by AI-driven heuristics|Zero Trust playbooks tailored to sensitive assets|Continuous compliance reporting across frameworks">
+                            <span class="services-stack__glyph" aria-hidden="true">🛡️</span>
+                            <span class="services-stack__label">Cybersecurity</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="11" data-icon="📊" data-usps="Unified data lakes with governed self-service access|Predictive models delivering actionable business signals|Embedded BI experiences that accelerate decision cycles">
+                            <span class="services-stack__glyph" aria-hidden="true">📊</span>
+                            <span class="services-stack__label">Data Analytics</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="12" data-icon="🔄" data-usps="Blueprints aligning tech investments to growth paths|Automation frameworks cutting manual effort by 40%|OKR-driven delivery ensuring measurable ROI">
+                            <span class="services-stack__glyph" aria-hidden="true">🔄</span>
+                            <span class="services-stack__label">Digital Transformation</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="13" data-icon="🤖" data-usps="Custom LLMs trained on proprietary knowledge bases|Responsible AI governance embedded end-to-end|Edge-ready inference for real-time personalization">
+                            <span class="services-stack__glyph" aria-hidden="true">🤖</span>
+                            <span class="services-stack__label">Artificial Intelligence</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="14" data-icon="🧾" data-usps="Modular ERP stacks tailored to complex workflows|Legacy modernization without operational downtime|Advanced analytics surfacing real-time inventory health">
+                            <span class="services-stack__glyph" aria-hidden="true">🧾</span>
+                            <span class="services-stack__label">ERP Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="15" data-icon="🎮" data-usps="AAA-quality environments optimized for web delivery|Live-ops toolkits for dynamic in-game events|Monetization models tuned for player retention">
+                            <span class="services-stack__glyph" aria-hidden="true">🎮</span>
+                            <span class="services-stack__label">2D/3D Game Development</span>
+                        </button>
+                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="16" data-icon="🌐" data-usps="Design systems delivering cohesive brand experiences|Lightning-fast performance scores across Core Web Vitals|Inclusive UX crafted with accessibility-first practices">
+                            <span class="services-stack__glyph" aria-hidden="true">🌐</span>
+                            <span class="services-stack__label">Web Development &amp; Design</span>
+                        </button>
+                    </div>
+
+                    <div class="services-stack__scroll-indicator" aria-hidden="true">
+                        <span class="services-stack__scroll-thumb"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Detail Portal - Detached Overlay -->
+    <div class="services-detail" data-service-detail aria-hidden="true">
+        <div class="services-detail__card" role="region" aria-live="polite">
+            <button type="button" class="services-detail__close" data-service-detail-close aria-label="Close service details">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="services-detail__icon" aria-hidden="true">💡</div>
+            <h3 class="services-detail__title">ICT Services</h3>
+            <ul class="services-detail__usps">
+                <li>24/7 infrastructure monitoring with proactive remediation</li>
+                <li>Hybrid cloud architecture tailored for global teams</li>
+                <li>Enterprise-grade compliance across critical markets</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
