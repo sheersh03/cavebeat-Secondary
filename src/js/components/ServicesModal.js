@@ -17,6 +17,11 @@ class ServicesModal extends ModalBase {
 
     this.stackInitialized = false;
     this.currentIndex = 0;
+    this.isDragging = false;
+    this.startY = 0;
+    this.currentY = 0;
+    this.velocity = 0;
+    this.lastTime = 0;
   }
 
   afterOpen() {
@@ -41,6 +46,11 @@ class ServicesModal extends ModalBase {
     if (this.detail) {
       this.hideDetail(true);
     }
+
+    // Cleanup listeners
+    if (this.boundEscapeKey) {
+      document.removeEventListener('keydown', this.boundEscapeKey);
+    }
   }
 
   initStack() {
@@ -52,7 +62,8 @@ class ServicesModal extends ModalBase {
     this.track = this.stackRoot.querySelector('.services-stack__track');
     this.items = Array.from(this.stackRoot.querySelectorAll('.services-stack__item'));
     this.scrollThumb = this.stackRoot.querySelector('.services-stack__scroll-thumb');
-    this.detail = this.modal.querySelector('[data-service-detail]');
+    // Find detail portal at body level
+    this.detail = document.querySelector('[data-service-detail]');
 
     if (!this.track || this.items.length === 0 || !this.detail) {
       return;
@@ -74,7 +85,10 @@ class ServicesModal extends ModalBase {
     }));
 
     this.items.forEach((item, index) => {
-      item.addEventListener('click', () => this.showService(index));
+      item.addEventListener('click', () => {
+        this.showService(index);
+        this.showDetail();
+      });
       item.addEventListener('keydown', (event) => this.handleItemKeydown(event, index));
     });
 
@@ -102,20 +116,11 @@ class ServicesModal extends ModalBase {
     // Close on Escape key
     this.boundEscapeKey = (e) => {
       if (e.key === 'Escape' && this.detail.classList.contains('is-visible')) {
+        e.preventDefault();
         this.hideDetail();
       }
     };
     document.addEventListener('keydown', this.boundEscapeKey);
-
-    // Close on scroll (modal scroll, not track scroll)
-    this.boundModalScroll = () => {
-      if (this.detail.classList.contains('is-visible')) {
-        this.hideDetail();
-      }
-    };
-    if (this.modal.closest('.modal-overlay')) {
-      this.modal.closest('.modal-overlay').addEventListener('scroll', this.boundModalScroll);
-    }
 
     // Prevent event bubbling on detail card
     const detailCard = this.detail.querySelector('.services-detail__card');
@@ -160,14 +165,10 @@ class ServicesModal extends ModalBase {
       const isActive = idx === clamped;
       item.classList.toggle('is-active', isActive);
       item.setAttribute('aria-selected', String(isActive));
-      if (isActive && document.activeElement === item) {
-        // leave focus
-      }
     });
 
     this.applyTransform({ immediate });
     this.renderDetail(this.servicesData[clamped]);
-    // Don't auto-show detail - user must click
   }
 
   applyTransform({ immediate = false } = {}) {
@@ -184,8 +185,7 @@ class ServicesModal extends ModalBase {
     this.track.style.transform = `translateY(${targetOffset}px)`;
 
     if (immediate) {
-      // force reflow then restore transition
-      void this.track.offsetHeight; // eslint-disable-line no-unused-expressions
+      void this.track.offsetHeight;
       this.track.style.transition = '';
     }
 
@@ -247,6 +247,14 @@ class ServicesModal extends ModalBase {
 
     this.detail.classList.add('is-visible');
     this.detail.setAttribute('aria-hidden', 'false');
+
+    // Focus trap
+    setTimeout(() => {
+      const closeBtn = this.detail.querySelector('.services-detail__close');
+      if (closeBtn) {
+        closeBtn.focus();
+      }
+    }, 100);
   }
 
   hideDetail(force = false) {
@@ -271,17 +279,34 @@ class ServicesModal extends ModalBase {
   handleItemKeydown(event, index) {
     switch (event.key) {
     case 'ArrowDown':
+    case 'ArrowRight':
       event.preventDefault();
       this.focusItem(index + 1);
       break;
     case 'ArrowUp':
+    case 'ArrowLeft':
       event.preventDefault();
       this.focusItem(index - 1);
+      break;
+    case 'Home':
+      event.preventDefault();
+      this.focusItem(0);
+      break;
+    case 'End':
+      event.preventDefault();
+      this.focusItem(this.items.length - 1);
       break;
     case 'Enter':
     case ' ':
       event.preventDefault();
       this.showService(index);
+      this.showDetail();
+      break;
+    case 'Escape':
+      event.preventDefault();
+      if (this.detail.classList.contains('is-visible')) {
+        this.hideDetail();
+      }
       break;
     default:
       break;
@@ -298,8 +323,16 @@ class ServicesModal extends ModalBase {
   }
 
   handlePointerDown(event) {
-    this.isSwiping = true;
-    this.swipeStartY = event.clientY;
+    // Ignore if clicking on an item
+    if (event.target.closest('.services-stack__item')) {
+      return;
+    }
+
+    this.isDragging = true;
+    this.startY = event.clientY;
+    this.currentY = event.clientY;
+    this.velocity = 0;
+    this.lastTime = Date.now();
     this.track.setPointerCapture(event.pointerId);
     this.track.addEventListener('pointermove', this.boundPointerMove);
     this.track.addEventListener('pointerup', this.boundPointerUp, { once: true });
@@ -307,7 +340,7 @@ class ServicesModal extends ModalBase {
   }
 
   handlePointerMove(event) {
-    if (!this.isSwiping) {
+    if (!this.isDragging) {
       return;
     }
 
@@ -316,37 +349,53 @@ class ServicesModal extends ModalBase {
       this.hideDetail();
     }
 
-    const delta = event.clientY - this.swipeStartY;
+    const now = Date.now();
+    const dt = now - this.lastTime;
+    const delta = event.clientY - this.startY;
+
+    // Calculate velocity
+    if (dt > 0) {
+      this.velocity = (event.clientY - this.currentY) / dt;
+    }
+
+    this.currentY = event.clientY;
+    this.lastTime = now;
+
     this.track.style.transition = 'none';
-    // Enhanced fluid motion with elastic damping
-    const dampingFactor = 0.4;
+    const dampingFactor = 0.5;
     const offset = -(this.itemSpacing * this.currentIndex) + delta * dampingFactor;
     this.track.style.transform = `translateY(${offset}px)`;
   }
 
   handlePointerUp(event) {
-    if (!this.isSwiping) {
+    if (!this.isDragging) {
       return;
     }
 
-    this.isSwiping = false;
+    this.isDragging = false;
     this.track.releasePointerCapture(event.pointerId);
     this.track.removeEventListener('pointermove', this.boundPointerMove);
 
     // Ultra-smooth water-like transition
     this.track.style.transition = 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-    const delta = event.clientY - this.swipeStartY;
-    const threshold = 30;
-    if (Math.abs(delta) > threshold) {
-      if (delta < 0) {
-        this.showService(this.currentIndex + 1);
-      } else {
-        this.showService(this.currentIndex - 1);
-      }
+    const delta = event.clientY - this.startY;
+    const threshold = 25;
+
+    // Use velocity for inertia
+    const velocityThreshold = 0.5;
+    let targetIndex = this.currentIndex;
+
+    if (Math.abs(this.velocity) > velocityThreshold) {
+      targetIndex = this.velocity < 0 ? this.currentIndex + 1 : this.currentIndex - 1;
+    } else if (Math.abs(delta) > threshold) {
+      targetIndex = delta < 0 ? this.currentIndex + 1 : this.currentIndex - 1;
     } else {
       this.applyTransform();
+      return;
     }
+
+    this.showService(targetIndex);
   }
 
   handleWheel(event) {
@@ -369,6 +418,12 @@ class ServicesModal extends ModalBase {
     window.setTimeout(() => {
       this.wheelLocked = false;
     }, 180);
+  }
+
+  destroy() {
+    if (this.boundEscapeKey) {
+      document.removeEventListener('keydown', this.boundEscapeKey);
+    }
   }
 }
 
