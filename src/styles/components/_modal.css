@@ -432,9 +432,11 @@ fieldset.form-field legend {
   margin: 0 auto;
   flex: 1;
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   position: relative;
   border-radius: 20px;
-  padding: 18px 20px;
+  padding: 24px;
   background: linear-gradient(180deg, rgba(20, 24, 35, 0.45) 0%, rgba(8, 12, 23, 0.6) 100%);
   border: 1px solid rgba(126, 205, 255, 0.1);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 20px 50px rgba(4, 10, 22, 0.3);
@@ -442,17 +444,50 @@ fieldset.form-field legend {
   contain: layout style paint;
 }
 
+/* Elegant fade gradient overlays */
+.services-stack__track::before,
+.services-stack__track::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.services-stack__track::before {
+  top: 0;
+  background: linear-gradient(180deg,
+    rgba(20, 24, 35, 0.95) 0%,
+    rgba(20, 24, 35, 0.6) 40%,
+    rgba(20, 24, 35, 0) 100%
+  );
+}
+
+.services-stack__track::after {
+  bottom: 0;
+  background: linear-gradient(0deg,
+    rgba(8, 12, 23, 0.95) 0%,
+    rgba(8, 12, 23, 0.6) 40%,
+    rgba(8, 12, 23, 0) 100%
+  );
+}
+
 
 .services-stack__item {
   width: 100%;
   min-width: 0;
-  max-width: calc(100% - 4px);
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
-  padding: 13px 16px;
-  margin: 4px 2px;
+  padding: 14px 18px;
+  margin: 0;
+  margin-bottom: 8px;
   border-radius: 14px;
   border: 1px solid transparent;
   background: linear-gradient(135deg, rgba(33, 42, 63, 0.55), rgba(14, 20, 33, 0.7));
@@ -461,14 +496,19 @@ fieldset.form-field legend {
   font-weight: var(--font-weight-medium);
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   cursor: pointer;
   user-select: none;
   box-sizing: border-box;
   overflow: hidden;
+  overflow-x: hidden;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+}
+
+.services-stack__item:last-child {
+  margin-bottom: 0;
 }
 
 .services-stack__item:hover {

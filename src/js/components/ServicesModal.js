@@ -376,8 +376,8 @@ class ServicesModal extends ModalBase {
     this.track.releasePointerCapture(event.pointerId);
     this.track.removeEventListener('pointermove', this.boundPointerMove);
 
-    // Ultra-smooth water-like transition
-    this.track.style.transition = 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    // Ultra-smooth water-fluid transition with zero lag
+    this.track.style.transition = 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)';
 
     const delta = event.clientY - this.startY;
     const threshold = 25;
@@ -406,8 +406,8 @@ class ServicesModal extends ModalBase {
 
     this.wheelLocked = true;
 
-    // Smoother wheel interaction
-    this.track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    // Ultra-smooth wheel interaction
+    this.track.style.transition = 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)';
 
     if (event.deltaY > 0) {
       this.showService(this.currentIndex + 1);
