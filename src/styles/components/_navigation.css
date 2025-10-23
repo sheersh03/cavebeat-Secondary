@@ -142,4 +142,14 @@ nav.scrolled {
   nav.scrolled {
     padding: 20px 30px;
   }
+
+  .nav-right {
+    gap: 20px;
+  }
+
+  .menu-toggle {
+    width: 44px;
+    height: 44px;
+    padding: 12px;
+  }
 }
