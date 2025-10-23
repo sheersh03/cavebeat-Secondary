@@ -20,7 +20,7 @@
                 <!-- <li><a href="#work">Work</a></li> -->
                 <!-- <li><a href="#about">About</a></li> -->
                 <li class="nav-link-desktop"><button type="button" class="nav-link-button" data-modal-open="services">Our Services</button></li>
-                <li class="nav-link-desktop"><a href="#industries">Industries</a></li>
+                <li class="nav-link-desktop"><button type="button" class="nav-link-button" data-modal-open="industries">Industries</button></li>
                 <!-- <li><a href="#contact">Contact</a></li> -->
             </ul>
             <div class="menu-toggle" id="menuToggle">
@@ -40,7 +40,8 @@
             <ul class="menu-items">
                 <li><a href="#work">Work</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><button type="button" data-modal-open="services">Services</button></li>
+                <li><button type="button" data-modal-open="industries">Industries</button></li>
                 <li><a href="#careers">Careers</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -268,76 +269,80 @@
                     </p>
                 </header>
 
-                <div class="services-stack" data-services-stack>
-                    <div class="services-stack__track" role="listbox" aria-label="Service offerings">
-                        <button type="button" class="services-stack__item is-active" role="option" aria-selected="true" data-service-index="0" data-icon="💡" data-usps="24/7 infrastructure monitoring with proactive remediation|Hybrid cloud architecture tailored for global teams|Enterprise-grade compliance across critical markets">
-                            <span class="services-stack__glyph" aria-hidden="true">💡</span>
-                            <span class="services-stack__label">ICT Services</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="1" data-icon="💻" data-usps="Design-to-deployment ownership with agile cadences|Modular codebases ready for rapid feature scaling|Automated QA pipelines delivering 99.9% uptime">
-                            <span class="services-stack__glyph" aria-hidden="true">💻</span>
-                            <span class="services-stack__label">Software Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="2" data-icon="📱" data-usps="Pixel-perfect native experiences across iOS and Android|Real-time analytics baked into every release|Offline-first architecture for resilient engagement">
-                            <span class="services-stack__glyph" aria-hidden="true">📱</span>
-                            <span class="services-stack__label">Mobile App Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="3" data-icon="🚀" data-usps="Secure device provisioning with zero-touch onboarding|Edge intelligence for millisecond decision loops|Unified dashboards across devices, data, and alerts">
-                            <span class="services-stack__glyph" aria-hidden="true">🚀</span>
-                            <span class="services-stack__label">IoT Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="4" data-icon="🧠" data-usps="Strategy sprints accelerating digital transformation|Vendor-neutral roadmaps aligned to business KPIs|Change management frameworks proven across enterprises">
-                            <span class="services-stack__glyph" aria-hidden="true">🧠</span>
-                            <span class="services-stack__label">IT Consulting</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="5" data-icon="🛠️" data-usps="Fully managed SOC with rapid incident resolution|Lifecycle management for hardware, software, and users|Predictive analytics driving lower operational costs">
-                            <span class="services-stack__glyph" aria-hidden="true">🛠️</span>
-                            <span class="services-stack__label">Managed IT Services</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="6" data-icon="⛓️" data-usps="Enterprise-grade smart contracts with formal audits|Interoperable ledgers connecting multi-chain ecosystems|Tokenomics design aligned with regulatory guidelines">
-                            <span class="services-stack__glyph" aria-hidden="true">⛓️</span>
-                            <span class="services-stack__label">Blockchain Services</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="7" data-icon="☁️" data-usps="Multi-cloud orchestration with automated scaling|FinOps governance delivering measurable savings|Zero-downtime migrations with rollback assurance">
-                            <span class="services-stack__glyph" aria-hidden="true">☁️</span>
-                            <span class="services-stack__label">Cloud Computing</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="8" data-icon="⚙️" data-usps="CI/CD pipelines deploying multiple times per day|Observability stacks tuned for instant anomaly detection|Infrastructure-as-code for reproducible environments">
-                            <span class="services-stack__glyph" aria-hidden="true">⚙️</span>
-                            <span class="services-stack__label">DevOps</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="9" data-icon="🕶️" data-usps="Immersive storytelling with photorealistic rendering|Cross-platform deployment for headset and mobile|Spatial analytics driving engagement insights">
-                            <span class="services-stack__glyph" aria-hidden="true">🕶️</span>
-                            <span class="services-stack__label">AR/VR Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="10" data-icon="🛡️" data-usps="Threat hunting powered by AI-driven heuristics|Zero Trust playbooks tailored to sensitive assets|Continuous compliance reporting across frameworks">
-                            <span class="services-stack__glyph" aria-hidden="true">🛡️</span>
-                            <span class="services-stack__label">Cybersecurity</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="11" data-icon="📊" data-usps="Unified data lakes with governed self-service access|Predictive models delivering actionable business signals|Embedded BI experiences that accelerate decision cycles">
-                            <span class="services-stack__glyph" aria-hidden="true">📊</span>
-                            <span class="services-stack__label">Data Analytics</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="12" data-icon="🔄" data-usps="Blueprints aligning tech investments to growth paths|Automation frameworks cutting manual effort by 40%|OKR-driven delivery ensuring measurable ROI">
-                            <span class="services-stack__glyph" aria-hidden="true">🔄</span>
-                            <span class="services-stack__label">Digital Transformation</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="13" data-icon="🤖" data-usps="Custom LLMs trained on proprietary knowledge bases|Responsible AI governance embedded end-to-end|Edge-ready inference for real-time personalization">
-                            <span class="services-stack__glyph" aria-hidden="true">🤖</span>
-                            <span class="services-stack__label">Artificial Intelligence</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="14" data-icon="🧾" data-usps="Modular ERP stacks tailored to complex workflows|Legacy modernization without operational downtime|Advanced analytics surfacing real-time inventory health">
-                            <span class="services-stack__glyph" aria-hidden="true">🧾</span>
-                            <span class="services-stack__label">ERP Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="15" data-icon="🎮" data-usps="AAA-quality environments optimized for web delivery|Live-ops toolkits for dynamic in-game events|Monetization models tuned for player retention">
-                            <span class="services-stack__glyph" aria-hidden="true">🎮</span>
-                            <span class="services-stack__label">2D/3D Game Development</span>
-                        </button>
-                        <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="16" data-icon="🌐" data-usps="Design systems delivering cohesive brand experiences|Lightning-fast performance scores across Core Web Vitals|Inclusive UX crafted with accessibility-first practices">
-                            <span class="services-stack__glyph" aria-hidden="true">🌐</span>
-                            <span class="services-stack__label">Web Development &amp; Design</span>
-                        </button>
+                <div class="services-stack" data-stack-root="services">
+                    <div class="services-stack__viewport">
+                        <div class="services-stack__track" role="listbox" aria-label="Service offerings">
+                            <button type="button" class="services-stack__item is-active" role="option" aria-selected="true" data-service-index="0" data-icon="💡" data-usps="24/7 infrastructure monitoring with proactive remediation|Hybrid cloud architecture tailored for global teams|Enterprise-grade compliance across critical markets">
+                                <span class="services-stack__glyph" aria-hidden="true">💡</span>
+                                <span class="services-stack__label">ICT Services</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="1" data-icon="💻" data-usps="Design-to-deployment ownership with agile cadences|Modular codebases ready for rapid feature scaling|Automated QA pipelines delivering 99.9% uptime">
+                                <span class="services-stack__glyph" aria-hidden="true">💻</span>
+                                <span class="services-stack__label">Software Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="2" data-icon="📱" data-usps="Pixel-perfect native experiences across iOS and Android|Real-time analytics baked into every release|Offline-first architecture for resilient engagement">
+                                <span class="services-stack__glyph" aria-hidden="true">📱</span>
+                                <span class="services-stack__label">Mobile App Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="3" data-icon="🚀" data-usps="Secure device provisioning with zero-touch onboarding|Edge intelligence for millisecond decision loops|Unified dashboards across devices, data, and alerts">
+                                <span class="services-stack__glyph" aria-hidden="true">🚀</span>
+                                <span class="services-stack__label">IoT Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="4" data-icon="🧠" data-usps="Strategy sprints accelerating digital transformation|Vendor-neutral roadmaps aligned to business KPIs|Change management frameworks proven across enterprises">
+                                <span class="services-stack__glyph" aria-hidden="true">🧠</span>
+                                <span class="services-stack__label">IT Consulting</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="5" data-icon="🛠️" data-usps="Fully managed SOC with rapid incident resolution|Lifecycle management for hardware, software, and users|Predictive analytics driving lower operational costs">
+                                <span class="services-stack__glyph" aria-hidden="true">🛠️</span>
+                                <span class="services-stack__label">Managed IT Services</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="6" data-icon="⛓️" data-usps="Enterprise-grade smart contracts with formal audits|Interoperable ledgers connecting multi-chain ecosystems|Tokenomics design aligned with regulatory guidelines">
+                                <span class="services-stack__glyph" aria-hidden="true">⛓️</span>
+                                <span class="services-stack__label">Blockchain Services</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="7" data-icon="☁️" data-usps="Multi-cloud orchestration with automated scaling|FinOps governance delivering measurable savings|Zero-downtime migrations with rollback assurance">
+                                <span class="services-stack__glyph" aria-hidden="true">☁️</span>
+                                <span class="services-stack__label">Cloud Computing</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="8" data-icon="⚙️" data-usps="CI/CD pipelines deploying multiple times per day|Observability stacks tuned for instant anomaly detection|Infrastructure-as-code for reproducible environments">
+                                <span class="services-stack__glyph" aria-hidden="true">⚙️</span>
+                                <span class="services-stack__label">DevOps</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="9" data-icon="🕶️" data-usps="Immersive storytelling with photorealistic rendering|Cross-platform deployment for headset and mobile|Spatial analytics driving engagement insights">
+                                <span class="services-stack__glyph" aria-hidden="true">🕶️</span>
+                                <span class="services-stack__label">AR/VR Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="10" data-icon="🛡️" data-usps="Threat hunting powered by AI-driven heuristics|Zero Trust playbooks tailored to sensitive assets|Continuous compliance reporting across frameworks">
+                                <span class="services-stack__glyph" aria-hidden="true">🛡️</span>
+                                <span class="services-stack__label">Cybersecurity</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="11" data-icon="📊" data-usps="Unified data lakes with governed self-service access|Predictive models delivering actionable business signals|Embedded BI experiences that accelerate decision cycles">
+                                <span class="services-stack__glyph" aria-hidden="true">📊</span>
+                                <span class="services-stack__label">Data Analytics</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="12" data-icon="🔄" data-usps="Blueprints aligning tech investments to growth paths|Automation frameworks cutting manual effort by 40%|OKR-driven delivery ensuring measurable ROI">
+                                <span class="services-stack__glyph" aria-hidden="true">🔄</span>
+                                <span class="services-stack__label">Digital Transformation</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="13" data-icon="🤖" data-usps="Custom LLMs trained on proprietary knowledge bases|Responsible AI governance embedded end-to-end|Edge-ready inference for real-time personalization">
+                                <span class="services-stack__glyph" aria-hidden="true">🤖</span>
+                                <span class="services-stack__label">Artificial Intelligence</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="14" data-icon="🧾" data-usps="Modular ERP stacks tailored to complex workflows|Legacy modernization without operational downtime|Advanced analytics surfacing real-time inventory health">
+                                <span class="services-stack__glyph" aria-hidden="true">🧾</span>
+                                <span class="services-stack__label">ERP Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="15" data-icon="🎮" data-usps="AAA-quality environments optimized for web delivery|Live-ops toolkits for dynamic in-game events|Monetization models tuned for player retention">
+                                <span class="services-stack__glyph" aria-hidden="true">🎮</span>
+                                <span class="services-stack__label">2D/3D Game Development</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="16" data-icon="🌐" data-usps="Design systems delivering cohesive brand experiences|Lightning-fast performance scores across Core Web Vitals|Inclusive UX crafted with accessibility-first practices">
+                                <span class="services-stack__glyph" aria-hidden="true">🌐</span>
+                                <span class="services-stack__label">Web Development &amp; Design</span>
+                            </button>
+                        </div>
+                        <div class="services-stack__fade services-stack__fade--top" aria-hidden="true"></div>
+                        <div class="services-stack__fade services-stack__fade--bottom" aria-hidden="true"></div>
                     </div>
 
                     <div class="services-stack__scroll-indicator" aria-hidden="true">
@@ -348,10 +353,192 @@
         </div>
     </div>
 
-    <!-- Services Detail Portal - Detached Overlay -->
-    <div class="services-detail" data-service-detail aria-hidden="true">
+    <!-- Industries Overview Modal -->
+    <div class="modal-overlay" id="industriesModal" role="presentation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog--services" role="dialog" aria-modal="true" aria-labelledby="industriesModalTitle" aria-describedby="industriesModalDescription">
+            <div class="services-modal__bg" aria-hidden="true">
+                <span class="cube cube--one"></span>
+                <span class="cube cube--two"></span>
+                <span class="cube cube--three"></span>
+                <span class="cube cube--four"></span>
+            </div>
+            <button type="button" class="modal-close" data-modal-close aria-label="Close industries overview">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div class="services-modal">
+                <header class="services-modal__header">
+                    <h2 id="industriesModalTitle">Industries</h2>
+                    <p id="industriesModalDescription" class="services-modal__subtitle">Cross-vertical digital impact</p>
+                    <p class="services-modal__intro">
+                        We partner with category leaders and high-growth disruptors across every industry to build adaptive products, scalable platforms, and standout customer experiences.
+                    </p>
+                </header>
+
+                <div class="services-stack" data-stack-root="industries">
+                    <div class="services-stack__viewport">
+                        <div class="services-stack__track" role="listbox" aria-label="Industries served">
+                            <button type="button" class="services-stack__item is-active" role="option" aria-selected="true" data-service-index="0" data-icon="🚕" data-usps="On-demand fleet control dashboards|Dynamic pricing tuned to urban demand|Driver engagement journeys with gamified rewards">
+                                <span class="services-stack__glyph" aria-hidden="true">🚕</span>
+                                <span class="services-stack__label">Taxi</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="1" data-icon="⚡" data-usps="Elastic fulfillment orchestration|AI routing for hour-level delivery SLAs|Trust-centric CX for marketplace providers">
+                                <span class="services-stack__glyph" aria-hidden="true">⚡</span>
+                                <span class="services-stack__label">On Demand</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="2" data-icon="🛒" data-usps="Composable storefront architecture|Headless commerce for omnichannel expansion|Conversion labs driving double-digit uplift">
+                                <span class="services-stack__glyph" aria-hidden="true">🛒</span>
+                                <span class="services-stack__label">Ecommerce</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="3" data-icon="💳" data-usps="Regulatory-grade payment rails|Fraud intelligence with LLM-driven heuristics|Hyper-personalized wealth journeys">
+                                <span class="services-stack__glyph" aria-hidden="true">💳</span>
+                                <span class="services-stack__label">Fintech</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="4" data-icon="💬" data-usps="Relevance engines for matchmaking|Moderation pipelines blending AI + human review|Immersive chat canvases with real-time safety cues">
+                                <span class="services-stack__glyph" aria-hidden="true">💬</span>
+                                <span class="services-stack__label">Dating &amp; Chatting</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="5" data-icon="🌐" data-usps="Creator-first community tooling|Realtime broadcasting at global scale|Identity orchestration with privacy guardrails">
+                                <span class="services-stack__glyph" aria-hidden="true">🌐</span>
+                                <span class="services-stack__label">Social Networking</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="6" data-icon="🏋️" data-usps="Adaptive training journeys with biometrics|Connected hardware integrations for gyms|Subscription engines boosting member retention">
+                                <span class="services-stack__glyph" aria-hidden="true">🏋️</span>
+                                <span class="services-stack__label">Fitness</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="7" data-icon="🌾" data-usps="Farm-to-cloud analytics for crop yields|Supply chain traceability with IoT telemetry|Decision support for agronomists in the field">
+                                <span class="services-stack__glyph" aria-hidden="true">🌾</span>
+                                <span class="services-stack__label">Agriculture</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="8" data-icon="🚚" data-usps="Fleet visibility with predictive ETAs|Warehouse automation for just-in-time ops|Carrier marketplaces accelerating fulfillment">
+                                <span class="services-stack__glyph" aria-hidden="true">🚚</span>
+                                <span class="services-stack__label">Logistics</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="9" data-icon="🛢️" data-usps="Field ops digitisation with rugged mobility|Pipeline monitoring with anomaly detection|Energy trading portals with risk governance">
+                                <span class="services-stack__glyph" aria-hidden="true">🛢️</span>
+                                <span class="services-stack__label">Oil &amp; Gas</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="10" data-icon="📡" data-usps="5G rollout intelligence dashboards|Customer care automation with NLP|Network optimisation tuned for churn reduction">
+                                <span class="services-stack__glyph" aria-hidden="true">📡</span>
+                                <span class="services-stack__label">Telecom</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="11" data-icon="🏗️" data-usps="Digital twins for capital projects|Field-ready inspections with AR overlays|Bid management workflows linking partners">
+                                <span class="services-stack__glyph" aria-hidden="true">🏗️</span>
+                                <span class="services-stack__label">Construction</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="12" data-icon="🛡️" data-usps="Self-service policy experiences|AI underwriting with transparent explainability|Claims automation that delights adjusters">
+                                <span class="services-stack__glyph" aria-hidden="true">🛡️</span>
+                                <span class="services-stack__label">Insurance</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="13" data-icon="✈️" data-usps="Passenger journey orchestration|Crew ops dashboards with disruption foresight|Ancillary revenue engines boosting yield">
+                                <span class="services-stack__glyph" aria-hidden="true">✈️</span>
+                                <span class="services-stack__label">Aviation</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="14" data-icon="🏭" data-usps="Smart factory telemetry with AI alerts|Digital work instructions for frontline teams|Supply mesh planning with resilient twins">
+                                <span class="services-stack__glyph" aria-hidden="true">🏭</span>
+                                <span class="services-stack__label">Manufacturing</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="15" data-icon="🤝" data-usps="Donor engagement with transparency loops|Impact measurement dashboards|Grant workflows harmonising stakeholders">
+                                <span class="services-stack__glyph" aria-hidden="true">🤝</span>
+                                <span class="services-stack__label">NGO</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="16" data-icon="📚" data-usps="Adaptive learning paths powered by AI|Cohort analytics accelerating retention|LMS platforms ready for global classrooms">
+                                <span class="services-stack__glyph" aria-hidden="true">📚</span>
+                                <span class="services-stack__label">eLearning</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="17" data-icon="🍽️" data-usps="Kitchen-to-table orchestration|Guest personalisation with loyalty intel|Multi-brand marketplace tooling">
+                                <span class="services-stack__glyph" aria-hidden="true">🍽️</span>
+                                <span class="services-stack__label">Restaurant</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="18" data-icon="🎬" data-usps="Immersive streaming destinations|Fan monetisation with web3 loyalty|Studio ops dashboards for content velocity">
+                                <span class="services-stack__glyph" aria-hidden="true">🎬</span>
+                                <span class="services-stack__label">Entertainment</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="19" data-icon="🧳" data-usps="Trip planning with live context|Unified booking stacks for partners|Guest messaging that scales with AI hosts">
+                                <span class="services-stack__glyph" aria-hidden="true">🧳</span>
+                                <span class="services-stack__label">Travel</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="20" data-icon="🛴" data-usps="Micromobility fleet tracking|Safety tooling with vision inference|Subscription bundles for commuter loyalty">
+                                <span class="services-stack__glyph" aria-hidden="true">🛴</span>
+                                <span class="services-stack__label">E-scooter</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="21" data-icon="🎟️" data-usps="Event commerce with high-volume drops|Experiential apps that bridge digital + IRL|Sponsor analytics capturing every touchpoint">
+                                <span class="services-stack__glyph" aria-hidden="true">🎟️</span>
+                                <span class="services-stack__label">Events</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="22" data-icon="🚗" data-usps="Connected vehicle companion apps|Dealer network enablement|Lifecycle marketing tuned to ownership moments">
+                                <span class="services-stack__glyph" aria-hidden="true">🚗</span>
+                                <span class="services-stack__label">Automotive</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="23" data-icon="🏥" data-usps="Virtual care pathways with compliance baked in|Patient 360 platforms for coordinated teams|IoMT integration delivering proactive insights">
+                                <span class="services-stack__glyph" aria-hidden="true">🏥</span>
+                                <span class="services-stack__label">Health Care</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="24" data-icon="☁️" data-usps="Product led growth playbooks|Usage metering with billing intelligence|Secure multi-tenant architectures at scale">
+                                <span class="services-stack__glyph" aria-hidden="true">☁️</span>
+                                <span class="services-stack__label">SaaS</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="25" data-icon="🎮" data-usps="Live-ops command centers|Cross-platform progression systems|Player safety with community guardrails">
+                                <span class="services-stack__glyph" aria-hidden="true">🎮</span>
+                                <span class="services-stack__label">Games</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="26" data-icon="🧘" data-usps="Habit-forming wellness journeys|Wearable integrations for biofeedback|Mind-body content pipelines with personalization">
+                                <span class="services-stack__glyph" aria-hidden="true">🧘</span>
+                                <span class="services-stack__label">Wellness</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="27" data-icon="🗳️" data-usps="Civic engagement platforms at national scale|Secure identity verification with audit trails|Policy storytelling that activates supporters">
+                                <span class="services-stack__glyph" aria-hidden="true">🗳️</span>
+                                <span class="services-stack__label">Politics</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="28" data-icon="🔋" data-usps="Charging network management|Battery intelligence for predictive maintenance|EV ownership journeys from research to renew">
+                                <span class="services-stack__glyph" aria-hidden="true">🔋</span>
+                                <span class="services-stack__label">EV</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="29" data-icon="🏦" data-usps="Omnichannel banking with instant trust cues|Core integrations modernised via APIs|Financial guidance with regulated AI copilots">
+                                <span class="services-stack__glyph" aria-hidden="true">🏦</span>
+                                <span class="services-stack__label">Banking</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="30" data-icon="🏢" data-usps="Proptech platforms with digital twins|Leasing journeys reimagined for mobile|Smart building telemetry driving NOI gains">
+                                <span class="services-stack__glyph" aria-hidden="true">🏢</span>
+                                <span class="services-stack__label">Real Estate</span>
+                            </button>
+                            <button type="button" class="services-stack__item" role="option" aria-selected="false" data-service-index="31" data-icon="📰" data-usps="Subscription models balancing reach + revenue|Newsroom tooling for rapid storytelling|Trust signals elevating editorial credibility">
+                                <span class="services-stack__glyph" aria-hidden="true">📰</span>
+                                <span class="services-stack__label">News</span>
+                            </button>
+                        </div>
+                        <div class="services-stack__fade services-stack__fade--top" aria-hidden="true"></div>
+                        <div class="services-stack__fade services-stack__fade--bottom" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="services-stack__scroll-indicator" aria-hidden="true">
+                        <span class="services-stack__scroll-thumb"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Industries Detail Portal - Detached Overlay -->
+    <div class="services-detail" data-stack-detail="industries" aria-hidden="true">
         <div class="services-detail__card" role="region" aria-live="polite">
-            <button type="button" class="services-detail__close" data-service-detail-close aria-label="Close service details">
+            <button type="button" class="services-detail__close" data-stack-detail-close="industries" aria-label="Close industry details">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="services-detail__icon" aria-hidden="true">🚕</div>
+            <h3 class="services-detail__title">Taxi</h3>
+            <ul class="services-detail__usps">
+                <li>On-demand fleet control dashboards</li>
+                <li>Dynamic pricing tuned to urban demand</li>
+                <li>Driver engagement journeys with gamified rewards</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Services Detail Portal - Detached Overlay -->
+    <div class="services-detail" data-stack-detail="services" aria-hidden="true">
+        <div class="services-detail__card" role="region" aria-live="polite">
+            <button type="button" class="services-detail__close" data-stack-detail-close="services" aria-label="Close service details">
                 <span aria-hidden="true">&times;</span>
             </button>
             <div class="services-detail__icon" aria-hidden="true">💡</div>

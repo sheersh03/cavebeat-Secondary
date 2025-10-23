@@ -1,13 +1,18 @@
 import ModalBase from './ModalBase';
 
 /**
- * ServicesModal drives the vertical services stack with gesture support and detail popups.
+ * ServicesModal powers the animated services stack with infinite looping,
+ * gesture support, and detached USP overlay.
  */
 class ServicesModal extends ModalBase {
-  constructor() {
+  constructor({
+    modalId = 'servicesModal',
+    triggerSelector = '[data-modal-open="services"]',
+    namespace = 'services'
+  } = {}) {
     super({
-      modalId: 'servicesModal',
-      triggerSelector: '[data-modal-open="services"]',
+      modalId,
+      triggerSelector,
       focusFirstSelector: '.services-stack__item'
     });
 
@@ -15,13 +20,25 @@ class ServicesModal extends ModalBase {
       return;
     }
 
+    this.namespace = namespace;
+    this.selectors = {
+      stackRoot: `[data-stack-root="${this.namespace}"]`,
+      detail: `[data-stack-detail="${this.namespace}"]`,
+      detailClose: `[data-stack-detail-close="${this.namespace}"]`
+    };
+
     this.stackInitialized = false;
-    this.currentIndex = 0;
-    this.isDragging = false;
-    this.startY = 0;
-    this.currentY = 0;
-    this.velocity = 0;
-    this.lastTime = 0;
+    this.detailOpen = false;
+
+    this.boundTransitionEnd = this.onTransitionEnd.bind(this);
+    this.boundPointerDown = this.handlePointerDown.bind(this);
+    this.boundPointerMove = this.handlePointerMove.bind(this);
+    this.boundPointerUp = this.handlePointerUp.bind(this);
+    this.boundWheel = this.handleWheel.bind(this);
+    this.boundResize = this.updateMetrics.bind(this);
+    this.boundStackKeydown = this.handleStackKeydown.bind(this);
+    this.boundDetailClick = this.handleDetailClick.bind(this);
+    this.boundDetailKeydown = this.handleDetailKeydown.bind(this);
   }
 
   afterOpen() {
@@ -34,7 +51,14 @@ class ServicesModal extends ModalBase {
     }
 
     if (this.stackInitialized) {
-      this.showService(this.currentIndex, { immediate: true });
+      this.syncState({ immediate: true });
+      this.focusCurrentItem();
+    }
+
+    this.modal.addEventListener('keydown', this.boundStackKeydown);
+    if (this.detail) {
+      this.detail.addEventListener('click', this.boundDetailClick);
+      this.detail.addEventListener('keydown', this.boundDetailKeydown);
     }
   }
 
@@ -43,38 +67,40 @@ class ServicesModal extends ModalBase {
       this.dialog.classList.remove('is-animating-in');
     }
 
-    if (this.detail) {
-      this.hideDetail(true);
-    }
+    this.hideDetail(true);
 
-    // Cleanup listeners
-    if (this.boundEscapeKey) {
-      document.removeEventListener('keydown', this.boundEscapeKey);
+    this.modal.removeEventListener('keydown', this.boundStackKeydown);
+    if (this.detail) {
+      this.detail.removeEventListener('click', this.boundDetailClick);
+      this.detail.removeEventListener('keydown', this.boundDetailKeydown);
     }
   }
 
   initStack() {
-    this.stackRoot = this.modal.querySelector('[data-services-stack]');
+    this.stackRoot = this.modal.querySelector(this.selectors.stackRoot);
     if (!this.stackRoot) {
       return;
     }
 
+    this.viewport = this.stackRoot.querySelector('.services-stack__viewport');
     this.track = this.stackRoot.querySelector('.services-stack__track');
-    this.items = Array.from(this.stackRoot.querySelectorAll('.services-stack__item'));
     this.scrollThumb = this.stackRoot.querySelector('.services-stack__scroll-thumb');
-    // Find detail portal at body level
-    this.detail = document.querySelector('[data-service-detail]');
 
-    if (!this.track || this.items.length === 0 || !this.detail) {
+    this.detail = this.modal.querySelector(this.selectors.detail) || document.querySelector(this.selectors.detail);
+    if (!this.track || !this.viewport || !this.detail) {
       return;
     }
+
+    this.viewport.style.touchAction = 'none';
+    this.track.style.willChange = 'transform';
 
     this.detailIcon = this.detail.querySelector('.services-detail__icon');
     this.detailTitle = this.detail.querySelector('.services-detail__title');
     this.detailList = this.detail.querySelector('.services-detail__usps');
-    this.detailClose = this.detail.querySelector('[data-service-detail-close]');
+    this.detailClose = this.detail.querySelector(this.selectors.detailClose);
 
-    this.servicesData = this.items.map((item, index) => ({
+    const initialItems = Array.from(this.track.querySelectorAll('.services-stack__item'));
+    this.servicesData = initialItems.map((item, index) => ({
       index,
       label: item.querySelector('.services-stack__label')?.textContent.trim() || `Service ${index + 1}`,
       icon: item.dataset.icon || item.querySelector('.services-stack__glyph')?.textContent.trim() || '',
@@ -84,136 +110,326 @@ class ServicesModal extends ModalBase {
         .filter(Boolean)
     }));
 
-    this.items.forEach((item, index) => {
-      item.addEventListener('click', () => {
-        this.showService(index);
-        this.showDetail();
-      });
-      item.addEventListener('keydown', (event) => this.handleItemKeydown(event, index));
-    });
+    this.baseCount = this.servicesData.length;
+    this.cycles = 3;
+    this.cycleOffset = this.baseCount;
 
-    this.boundPointerDown = this.handlePointerDown.bind(this);
-    this.boundPointerMove = this.handlePointerMove.bind(this);
-    this.boundPointerUp = this.handlePointerUp.bind(this);
-    this.boundWheel = this.handleWheel.bind(this);
-    this.boundResize = this.updateMetrics.bind(this);
+    this.track.innerHTML = '';
+    this.buildTrack();
 
-    this.track.addEventListener('pointerdown', this.boundPointerDown);
-    this.track.addEventListener('wheel', this.boundWheel, { passive: false });
+    this.items = Array.from(this.track.querySelectorAll('.services-stack__item'));
+    this.totalVirtual = this.items.length;
+    this.currentVirtualIndex = this.cycleOffset;
+    this.activeOriginalIndex = 0;
+
+    this.track.addEventListener('transitionend', this.boundTransitionEnd);
+    this.viewport.addEventListener('pointerdown', this.boundPointerDown);
+    this.viewport.addEventListener('wheel', this.boundWheel, { passive: false });
     window.addEventListener('resize', this.boundResize);
 
     if (this.detailClose) {
       this.detailClose.addEventListener('click', () => this.hideDetail());
     }
 
-    // Close on backdrop click
-    this.detail.addEventListener('click', (e) => {
-      if (e.target === this.detail) {
-        this.hideDetail();
-      }
-    });
-
-    // Close on Escape key
-    this.boundEscapeKey = (e) => {
-      if (e.key === 'Escape' && this.detail.classList.contains('is-visible')) {
-        e.preventDefault();
-        this.hideDetail();
-      }
-    };
-    document.addEventListener('keydown', this.boundEscapeKey);
-
-    // Prevent event bubbling on detail card
-    const detailCard = this.detail.querySelector('.services-detail__card');
-    if (detailCard) {
-      detailCard.addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-    }
-
     this.stackInitialized = true;
     this.updateMetrics();
   }
 
-  updateMetrics() {
-    if (!this.stackInitialized) {
-      return;
+  buildTrack() {
+    const fragment = document.createDocumentFragment();
+    let virtualIndex = 0;
+
+    for (let cycle = 0; cycle < this.cycles; cycle += 1) {
+      this.servicesData.forEach((service) => {
+        const item = this.createItem(service);
+        item.dataset.virtualIndex = String(virtualIndex);
+        item.dataset.originalIndex = String(service.index);
+        item.tabIndex = -1;
+
+        item.addEventListener('click', () => {
+          this.activateVirtualIndex(Number(item.dataset.virtualIndex), { openDetail: true });
+        });
+
+        item.addEventListener('keydown', (event) => {
+          this.handleItemKeydown(event, Number(item.dataset.virtualIndex));
+        });
+
+        fragment.appendChild(item);
+        virtualIndex += 1;
+      });
     }
 
-    if (this.items.length > 1) {
-      const firstRect = this.items[0].getBoundingClientRect();
-      const secondRect = this.items[1].getBoundingClientRect();
-      this.itemSpacing = secondRect.top - firstRect.top;
-    } else {
-      this.itemSpacing = this.items[0].getBoundingClientRect().height + 12;
-    }
-
-    this.visibleHeight = this.track.clientHeight;
-    this.totalHeight = this.itemSpacing * this.items.length;
-
-    this.applyTransform({ immediate: true });
+    this.track.appendChild(fragment);
   }
 
-  showService(index, { immediate = false } = {}) {
-    if (!this.stackInitialized) {
+  createItem(service) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'services-stack__item';
+    button.setAttribute('role', 'option');
+    button.setAttribute('aria-selected', 'false');
+    button.dataset.icon = service.icon;
+    button.dataset.usps = service.usps.join('|');
+    button.innerHTML = `
+      <span class="services-stack__glyph" aria-hidden="true">${service.icon}</span>
+      <span class="services-stack__label">${service.label}</span>
+    `;
+    return button;
+  }
+
+  updateMetrics() {
+    if (!this.stackInitialized || !this.items.length) {
       return;
     }
 
-    const clamped = Math.max(0, Math.min(index, this.items.length - 1));
-    this.currentIndex = clamped;
+    const firstRect = this.items[0].getBoundingClientRect();
+    const secondRect = this.items[1]?.getBoundingClientRect();
+    this.itemSpacing = secondRect ? secondRect.top - firstRect.top : firstRect.height + 12;
+    this.visibleHeight = this.viewport.clientHeight;
+    this.totalHeight = this.itemSpacing * this.totalVirtual;
 
-    this.items.forEach((item, idx) => {
-      const isActive = idx === clamped;
-      item.classList.toggle('is-active', isActive);
-      item.setAttribute('aria-selected', String(isActive));
-    });
+    this.syncState({ immediate: true });
+  }
 
+  syncState({ immediate = false } = {}) {
+    this.updateActiveClasses();
     this.applyTransform({ immediate });
-    this.renderDetail(this.servicesData[clamped]);
+    this.renderDetail(this.servicesData[this.activeOriginalIndex]);
+    this.updateScrollThumb();
+  }
+
+  updateActiveClasses() {
+    if (!this.items) {
+      return;
+    }
+
+    this.items.forEach((item) => {
+      const isActive = Number(item.dataset.virtualIndex) === this.currentVirtualIndex;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      item.tabIndex = isActive ? 0 : -1;
+    });
   }
 
   applyTransform({ immediate = false } = {}) {
-    if (!this.stackInitialized) {
+    if (!this.track) {
       return;
     }
-
-    const targetOffset = -(this.itemSpacing * this.currentIndex);
 
     if (immediate) {
       this.track.style.transition = 'none';
     }
 
-    this.track.style.transform = `translateY(${targetOffset}px)`;
+    const translateY = -(this.itemSpacing * this.currentVirtualIndex);
+    this.track.style.transform = `translateY(${translateY}px)`;
 
     if (immediate) {
       void this.track.offsetHeight;
       this.track.style.transition = '';
     }
+  }
 
-    this.updateScrollThumb();
+  onTransitionEnd(event) {
+    if (event.propertyName !== 'transform') {
+      return;
+    }
+    this.normalizeVirtualIndex();
+  }
+
+  normalizeVirtualIndex() {
+    const minIndex = this.cycleOffset;
+    const maxIndex = this.cycleOffset + this.baseCount - 1;
+    const hadFocus = this.isFocusWithinStack();
+
+    if (this.currentVirtualIndex > maxIndex) {
+      this.currentVirtualIndex -= this.baseCount;
+      this.applyTransform({ immediate: true });
+      this.updateActiveClasses();
+    } else if (this.currentVirtualIndex < minIndex) {
+      this.currentVirtualIndex += this.baseCount;
+      this.applyTransform({ immediate: true });
+      this.updateActiveClasses();
+    }
+
+    if (hadFocus) {
+      this.focusCurrentItem();
+    }
+  }
+
+  getOriginalIndex(virtualIndex) {
+    const index = virtualIndex % this.baseCount;
+    return (index + this.baseCount) % this.baseCount;
+  }
+
+  step(delta) {
+    this.currentVirtualIndex += delta;
+    this.activeOriginalIndex = this.getOriginalIndex(this.currentVirtualIndex);
+    this.syncState();
+  }
+
+  activateVirtualIndex(virtualIndex, { openDetail = false, immediate = false } = {}) {
+    this.currentVirtualIndex = virtualIndex;
+    this.activeOriginalIndex = this.getOriginalIndex(this.currentVirtualIndex);
+    this.syncState({ immediate });
+
+    if (openDetail) {
+      this.showDetail();
+    } else if (this.detailOpen) {
+      this.renderDetail(this.servicesData[this.activeOriginalIndex]);
+    }
+  }
+
+  handleItemKeydown(event, virtualIndex) {
+    switch (event.key) {
+    case 'ArrowDown':
+      event.preventDefault();
+      this.step(1);
+      this.focusCurrentItem();
+      break;
+    case 'ArrowUp':
+      event.preventDefault();
+      this.step(-1);
+      this.focusCurrentItem();
+      break;
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      this.activateVirtualIndex(virtualIndex, { openDetail: true });
+      break;
+    case 'Escape':
+      this.hideDetail();
+      break;
+    default:
+      break;
+    }
+  }
+
+  handleStackKeydown(event) {
+    if (event.key === 'Escape' && this.detailOpen) {
+      event.stopPropagation();
+      this.hideDetail();
+      return;
+    }
+
+    if (event.target !== this.modal) {
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.step(1);
+      this.focusCurrentItem();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.step(-1);
+      this.focusCurrentItem();
+    }
+  }
+
+  focusCurrentItem() {
+    const active = this.items?.find(item => Number(item.dataset.virtualIndex) === this.currentVirtualIndex);
+    if (active) {
+      active.focus({ preventScroll: true });
+    }
+  }
+
+  isFocusWithinStack() {
+    const activeElement = document.activeElement;
+    return !!activeElement && activeElement.classList?.contains('services-stack__item');
   }
 
   updateScrollThumb() {
-    if (!this.scrollThumb) {
+    if (!this.scrollThumb || this.baseCount <= 1) {
       return;
     }
 
-    if (this.totalHeight <= this.visibleHeight || this.items.length <= 1) {
-      this.scrollThumb.style.opacity = '0';
+    const ratio = this.visibleHeight / (this.itemSpacing * this.baseCount);
+    const thumbSize = Math.max(ratio * 100, 18);
+    const maxTravel = 100 - thumbSize;
+    const progress = this.activeOriginalIndex / (this.baseCount - 1 || 1);
+
+    this.scrollThumb.style.height = `${thumbSize}%`;
+    this.scrollThumb.style.transform = `translateY(${progress * maxTravel}%)`;
+  }
+
+  handleWheel(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const raw = event.deltaY / this.itemSpacing;
+    const steps = raw > 0 ? Math.max(1, Math.min(3, Math.round(raw))) : Math.min(-1, Math.max(-3, Math.round(raw)));
+    this.step(steps);
+  }
+
+  handlePointerDown(event) {
+    if (event.pointerType === 'mouse' && event.button !== 0) {
       return;
     }
 
-    this.scrollThumb.style.opacity = '1';
-    const thumbRatio = Math.max(this.visibleHeight / this.totalHeight, 0.12);
-    const heightPercent = thumbRatio * 100;
-    const maxTravel = 100 - heightPercent;
-    const progress = this.currentIndex / (this.items.length - 1 || 1);
+    event.preventDefault();
+    event.stopPropagation();
 
-    this.scrollThumb.style.height = `${heightPercent}%`;
-    this.scrollThumb.style.transform = `translateY(${maxTravel * progress}%)`;
+    this.isSwiping = true;
+    this.swipeStartY = event.clientY;
+    this.startVirtualIndex = this.currentVirtualIndex;
+    this.viewport.setPointerCapture(event.pointerId);
+    this.viewport.addEventListener('pointermove', this.boundPointerMove);
+    this.viewport.addEventListener('pointerup', this.boundPointerUp, { once: true });
+    this.viewport.addEventListener('pointercancel', this.boundPointerUp, { once: true });
+    this.track.style.transition = 'none';
+  }
+
+  handlePointerMove(event) {
+    if (!this.isSwiping) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const deltaY = event.clientY - this.swipeStartY;
+    const previewIndex = this.startVirtualIndex + (-deltaY / this.itemSpacing);
+    const translate = -(previewIndex * this.itemSpacing);
+    this.track.style.transform = `translateY(${translate}px)`;
+  }
+
+  handlePointerUp(event) {
+    if (!this.isSwiping) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.isSwiping = false;
+    this.viewport.releasePointerCapture(event.pointerId);
+    this.viewport.removeEventListener('pointermove', this.boundPointerMove);
+    this.track.style.transition = '';
+
+    const deltaY = event.clientY - this.swipeStartY;
+    const steps = Math.round(-deltaY / this.itemSpacing);
+
+    if (steps !== 0) {
+      this.step(steps);
+    } else {
+      this.applyTransform();
+    }
+  }
+
+  handleDetailClick(event) {
+    if (event.target === this.detail) {
+      this.hideDetail();
+    }
+  }
+
+  handleDetailKeydown(event) {
+    if (event.key === 'Escape') {
+      event.stopPropagation();
+      this.hideDetail();
+    }
   }
 
   renderDetail(service) {
-    if (!service) {
+    if (!service || !this.detail) {
       return;
     }
 
@@ -231,7 +447,7 @@ class ServicesModal extends ModalBase {
         const li = document.createElement('li');
         li.className = 'services-detail__usp';
         li.textContent = usp;
-        li.style.transitionDelay = `${idx * 70}ms`;
+        li.style.transitionDelay = `${idx * 80}ms`;
         this.detailList.appendChild(li);
         requestAnimationFrame(() => {
           li.classList.add('is-visible');
@@ -247,14 +463,10 @@ class ServicesModal extends ModalBase {
 
     this.detail.classList.add('is-visible');
     this.detail.setAttribute('aria-hidden', 'false');
-
-    // Focus trap
-    setTimeout(() => {
-      const closeBtn = this.detail.querySelector('.services-detail__close');
-      if (closeBtn) {
-        closeBtn.focus();
-      }
-    }, 100);
+    this.detailOpen = true;
+    if (this.detailClose) {
+      this.detailClose.focus({ preventScroll: true });
+    }
   }
 
   hideDetail(force = false) {
@@ -265,165 +477,18 @@ class ServicesModal extends ModalBase {
     if (force) {
       this.detail.classList.remove('is-visible');
       this.detail.setAttribute('aria-hidden', 'true');
+      this.detailOpen = false;
+      return;
+    }
+
+    if (!this.detailOpen) {
       return;
     }
 
     this.detail.classList.remove('is-visible');
     this.detail.setAttribute('aria-hidden', 'true');
-    const activeItem = this.items?.[this.currentIndex];
-    if (activeItem) {
-      activeItem.focus();
-    }
-  }
-
-  handleItemKeydown(event, index) {
-    switch (event.key) {
-    case 'ArrowDown':
-    case 'ArrowRight':
-      event.preventDefault();
-      this.focusItem(index + 1);
-      break;
-    case 'ArrowUp':
-    case 'ArrowLeft':
-      event.preventDefault();
-      this.focusItem(index - 1);
-      break;
-    case 'Home':
-      event.preventDefault();
-      this.focusItem(0);
-      break;
-    case 'End':
-      event.preventDefault();
-      this.focusItem(this.items.length - 1);
-      break;
-    case 'Enter':
-    case ' ':
-      event.preventDefault();
-      this.showService(index);
-      this.showDetail();
-      break;
-    case 'Escape':
-      event.preventDefault();
-      if (this.detail.classList.contains('is-visible')) {
-        this.hideDetail();
-      }
-      break;
-    default:
-      break;
-    }
-  }
-
-  focusItem(index) {
-    const clamped = Math.max(0, Math.min(index, this.items.length - 1));
-    const item = this.items[clamped];
-    if (item) {
-      item.focus();
-      this.showService(clamped);
-    }
-  }
-
-  handlePointerDown(event) {
-    // Ignore if clicking on an item
-    if (event.target.closest('.services-stack__item')) {
-      return;
-    }
-
-    this.isDragging = true;
-    this.startY = event.clientY;
-    this.currentY = event.clientY;
-    this.velocity = 0;
-    this.lastTime = Date.now();
-    this.track.setPointerCapture(event.pointerId);
-    this.track.addEventListener('pointermove', this.boundPointerMove);
-    this.track.addEventListener('pointerup', this.boundPointerUp, { once: true });
-    this.track.addEventListener('pointercancel', this.boundPointerUp, { once: true });
-  }
-
-  handlePointerMove(event) {
-    if (!this.isDragging) {
-      return;
-    }
-
-    // Hide detail during swipe for smoother interaction
-    if (this.detail.classList.contains('is-visible')) {
-      this.hideDetail();
-    }
-
-    const now = Date.now();
-    const dt = now - this.lastTime;
-    const delta = event.clientY - this.startY;
-
-    // Calculate velocity
-    if (dt > 0) {
-      this.velocity = (event.clientY - this.currentY) / dt;
-    }
-
-    this.currentY = event.clientY;
-    this.lastTime = now;
-
-    this.track.style.transition = 'none';
-    const dampingFactor = 0.5;
-    const offset = -(this.itemSpacing * this.currentIndex) + delta * dampingFactor;
-    this.track.style.transform = `translateY(${offset}px)`;
-  }
-
-  handlePointerUp(event) {
-    if (!this.isDragging) {
-      return;
-    }
-
-    this.isDragging = false;
-    this.track.releasePointerCapture(event.pointerId);
-    this.track.removeEventListener('pointermove', this.boundPointerMove);
-
-    // Ultra-smooth water-fluid transition with zero lag
-    this.track.style.transition = 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)';
-
-    const delta = event.clientY - this.startY;
-    const threshold = 25;
-
-    // Use velocity for inertia
-    const velocityThreshold = 0.5;
-    let targetIndex = this.currentIndex;
-
-    if (Math.abs(this.velocity) > velocityThreshold) {
-      targetIndex = this.velocity < 0 ? this.currentIndex + 1 : this.currentIndex - 1;
-    } else if (Math.abs(delta) > threshold) {
-      targetIndex = delta < 0 ? this.currentIndex + 1 : this.currentIndex - 1;
-    } else {
-      this.applyTransform();
-      return;
-    }
-
-    this.showService(targetIndex);
-  }
-
-  handleWheel(event) {
-    event.preventDefault();
-    if (this.wheelLocked) {
-      return;
-    }
-
-    this.wheelLocked = true;
-
-    // Ultra-smooth wheel interaction
-    this.track.style.transition = 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)';
-
-    if (event.deltaY > 0) {
-      this.showService(this.currentIndex + 1);
-    } else if (event.deltaY < 0) {
-      this.showService(this.currentIndex - 1);
-    }
-
-    window.setTimeout(() => {
-      this.wheelLocked = false;
-    }, 180);
-  }
-
-  destroy() {
-    if (this.boundEscapeKey) {
-      document.removeEventListener('keydown', this.boundEscapeKey);
-    }
+    this.detailOpen = false;
+    this.focusCurrentItem();
   }
 }
 

@@ -64,6 +64,13 @@ class App {
       // Initialize services modal (desktop only navigation trigger)
       this.components.servicesModal = new ServicesModal();
 
+      // Initialize industries modal with shared stack behaviour
+      this.components.industriesModal = new ServicesModal({
+        modalId: 'industriesModal',
+        triggerSelector: '[data-modal-open="industries"]',
+        namespace: 'industries'
+      });
+
       // Initialize hero typewriter
       this.components.heroTypewriter = new HeroTypewriter();
 

@@ -32,6 +32,11 @@ class Menu {
       link.addEventListener('click', () => this.close());
     });
 
+    const modalButtons = this.menu.querySelectorAll('[data-modal-open]');
+    modalButtons.forEach(button => {
+      button.addEventListener('click', () => this.close());
+    });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) {
         this.close();
